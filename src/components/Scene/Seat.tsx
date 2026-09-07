@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef } from 'react'
 import { Text, useGLTF } from '@react-three/drei'
 import { useOfficeStore, type Seat as SeatType } from '../../stores/useOfficeStore'
-import { useThree, useFrame } from '@react-three/fiber'
+import { useThree} from '@react-three/fiber'
 import * as THREE from 'three'
 
 interface SeatProps {
@@ -13,7 +13,7 @@ export function Seat({ seat }: SeatProps) {
   const groupRef = useRef<THREE.Group>(null)
   const { setSelectedSeat, selectedSeat, isEditMode, setSeats, seats } = useOfficeStore()
   const { scene } = useGLTF('/models/character3.glb')
-  const { camera, gl } = useThree()
+  const { gl } = useThree()
   const isSelected = selectedSeat?.id === seat.id
   const isEmpty = seat.status === 'empty' || !seat.name || seat.name === '空位'
   const isMaternity = seat.status === 'maternity'

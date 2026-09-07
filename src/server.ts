@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json())
 
 // Lấy tất cả ghế
-app.get('/api/seats', async (req, res) => {
+app.get('/api/seats', async (_req, res) => {
   try {
     const seats = await prisma.seats.findMany({
       orderBy: [{ floor_id: 'asc' }, { z: 'asc' }, { x: 'asc' }]
