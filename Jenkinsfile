@@ -44,13 +44,15 @@ pipeline {
                 sh 'docker compose -f docker-compose.prod.yml --env-file .env.docker build'
             }
         }
-
         stage('Deploy (manual approval)') {
             steps {
                 script {
                     input message: "Deploy ban moi len production (port 8081 / 3001)?", ok: 'Approve'
                 }
-                sh 'docker compose -f docker-compose.prod.yml --env-file .env.docker up -d'
+                sh '''
+                    docker compose -f docker-compose.prod.yml --env-file .env.docker down
+                    docker compose -f docker-compose.prod.yml --env-file .env.docker up -d
+                '''
             }
         }
     }
