@@ -7,7 +7,7 @@ pipeline {
 
     options {
         disableConcurrentBuilds()
-        timeout(time: 15, unit: 'MINUTES')
+        timeout(time: 20, unit: 'MINUTES')
     }
 
     stages {
@@ -38,14 +38,29 @@ pipeline {
                 sh 'npm run build'
             }
         }
+
+        stage('Build Docker Images') {
+            steps {
+                sh 'docker compose -f docker-compose.prod.yml --env-file .env.docker build'
+            }
+        }
+
+        stage('Deploy (manual approval)') {
+            steps {
+                script {
+                    input message: "Deploy bản mới lên production (port 8081 / 3001)?", ok: 'Approve'
+                }
+                sh 'docker compose -f docker-compose.prod.yml --env-file .env.docker up -d'
+            }
+        }
     }
 
     post {
         success {
-            echo "✅ Code build thành công"
+            echo "✅ Build & Deploy thành công"
         }
         failure {
-            echo "❌ Build thất bại - xem log tại ${BUILD_URL}"
+            echo "❌ Thất bại - xem log tại ${BUILD_URL}"
         }
     }
 }
