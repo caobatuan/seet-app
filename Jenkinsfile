@@ -48,7 +48,7 @@ pipeline {
         stage('Deploy (manual approval)') {
             steps {
                 script {
-                    input message: "Deploy bản mới lên production (port 8081 / 3001)?", ok: 'Approve'
+                    input message: "Deploy ban moi len production (port 8081 / 3001)?", ok: 'Approve'
                 }
                 sh 'docker compose -f docker-compose.prod.yml --env-file .env.docker up -d'
             }
@@ -57,10 +57,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Build & Deploy thành công"
+            echo "Build & Deploy thanh cong"
         }
         failure {
-            echo "❌ Thất bại - xem log tại ${BUILD_URL}"
+            echo "That bai - xem log"
         }
     }
 }
